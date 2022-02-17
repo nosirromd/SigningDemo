@@ -32,14 +32,14 @@ namespace SigningDemo
 
         public void InitAliceKeys()
         {
-            //create a digital signiture key and export into a public key blob
+            //create a key pair and export public key into a blob
             _aliceKeySignature = CngKey.Create(CngAlgorithm.ECDsaP521);
             _alicePubKeyBlob = _aliceKeySignature.Export(CngKeyBlobFormat.GenericPublicBlob);
         }
 
         private byte[] CreateSignature(byte[] data, CngKey key)
         {
-            // create a digital signiture by using alice's name and signiture key
+            // alice's name data element is signed using alice's private key
             byte[] signature;
             using (var signingAlg = new ECDsaCng(key))
             {
@@ -51,9 +51,9 @@ namespace SigningDemo
 
         private bool VerifySignature(byte[] data, byte[] signature, byte[] pubKey)
         {
-            // import public key blob to obtain key
-            // create new cryt class instance and use it to
-            // check that signiture is indeed that of alice's
+            // import key blob to obtain public key
+            // create new crypto class instance and use it to
+            // check that signature is indeed that of alice's
             bool retValue = false;
             using (CngKey key = CngKey.Import(pubKey, CngKeyBlobFormat.GenericPublicBlob))
             using (var signingAlg = new ECDsaCng(key))
