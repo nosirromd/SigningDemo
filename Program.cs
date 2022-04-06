@@ -34,12 +34,12 @@ namespace SigningDemo
         {
             //create a key pair and export public key into a blob
             _aliceKeySignature = CngKey.Create(CngAlgorithm.ECDsaP521); //key pair using the elliptic curve algorithm
-            _alicePubKeyBlob = _aliceKeySignature.Export(CngKeyBlobFormat.GenericPublicBlob); // serialise into a byte stream??
+            _alicePubKeyBlob = _aliceKeySignature.Export(CngKeyBlobFormat.GenericPublicBlob); // serialise into a byte stream
         }
 
         private byte[] CreateSignature(byte[] data, CngKey key)
         {
-            // alice's name data element is signed using alice's private key
+            // alice's name is signed using alice's private key
             byte[] signature;
             using (var signingAlg = new ECDsaCng(key)) // use the elliptic curve algorithm
             {
@@ -53,7 +53,7 @@ namespace SigningDemo
 
         private bool VerifySignature(byte[] data, byte[] signature, byte[] pubKey)
         {
-            // import key byte array to obtain public key object
+            // import key byte array to obtain alice's public key object
             // create new crypto class instance and use it to
             // check that signature is indeed that of alice's
             // return true is verified
